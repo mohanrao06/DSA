@@ -1,18 +1,11 @@
 class Solution {
 public:
-    bool bfs(int start,vector<int>&col,vector<vector<int>>& graph,int n){
-        queue<int> q;
-        q.push(start);
-        col[start]=0;
-        while(!q.empty()){
-            int node=q.front();
-            q.pop() ;
-            for(int it:graph[node]){
-                if(col[it]==-1){
-                    col[it]=!col[node];
-                    q.push(it);
-                }else if(col[it]==col[node])return false;
-            }       
+    bool dfs(int start,int c,vector<int>&col,vector<vector<int>>& graph,int n){
+        col[start]=c;
+        for(int it:graph[start]){
+            if(col[it]==-1){
+                if(dfs(it,!c,col,graph,n)==false)return false;
+            }else if(col[it]==col[start])return false;
         }
         return true;
     }
@@ -24,7 +17,7 @@ public:
        
         for(int i=0;i<n;i++){
             if(col[i]==-1){
-            if(bfs(i,col,graph,n)==false)return false;
+            if(dfs(i,0,col,graph,n)==false)return false;
             }
         }
         return true;
