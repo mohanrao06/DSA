@@ -16,7 +16,7 @@ public:
             int node=pq.top().second;
             int time=pq.top().first;
             pq.pop();
-            if (time > dist[node]) continue;
+            // if (time > dist[node]) continue;
             for(auto it:adj[node]){
                 int v=it.first;
                 int t=it.second;
