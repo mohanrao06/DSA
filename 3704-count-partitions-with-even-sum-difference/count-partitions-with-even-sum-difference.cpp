@@ -2,17 +2,18 @@ class Solution {
 public:
     int countPartitions(vector<int>& nums) {
         int ans=0;
-        int sum1=0;
-        
+        int sum=0;
+        for(int i=0;i<nums.size();i++)sum+=nums[i];
+        int x=0;
         for(int i=0;i<nums.size()-1;i++){
-            sum1+=nums[i];
-            int sum2=0;
-            for(int j=i+1;j<nums.size();j++){
-                sum2+=nums[j];
-            }
-            if((sum1-sum2)%2==0)ans++;
+            x+=nums[i];
+            int y=sum-x;
+            if((x-y)%2==0)ans++;
+
         }
         return ans;
+        
+        
 
     }
 };
