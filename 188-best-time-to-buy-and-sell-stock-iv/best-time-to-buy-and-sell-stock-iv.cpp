@@ -21,30 +21,31 @@ public:
     }
     int maxProfit(int k, vector<int>& prices) {
         int n=prices.size();
-        vector<vector<vector<int>>> dp(
-            n+1,
-            vector<vector<int>>(2, vector<int>(k + 1, 0))
-        );
+
+        vector<vector<int>> after(2, vector<int>(k + 1, 0));
+        vector<vector<int>> curr(2, vector<int>(k + 1, 0));
+    
         for(int ind=n-1;ind>=0;ind--){
             for(int buy=0;buy<=1;buy++){
                 for(int K=1;K<=k;K++){
                     int profit=0;
                     if(buy){
                         profit = max(
-                            -prices[ind]+dp[ind+1][0][K],
-                            dp[ind+1][1][K]
+                            -prices[ind]+after[0][K],
+                            after[1][K]
                         );
 
                     }else{
                         profit = max(
-                            prices[ind]+dp[ind+1][1][K-1],
-                            dp[ind+1][0][K]
+                            prices[ind]+after[1][K-1],
+                            after[0][K]
                         );
                     }
-                    dp[ind][buy][K]=profit;
+                    curr[buy][K]=profit;
                 }
             }
+            after=curr;
         }
-        return dp[0][1][k];
+        return after[1][k];
     }
 };
