@@ -5,12 +5,12 @@ public:
 
         if(dp[ind][prev+1]!=-1)return dp[ind][prev+1];
 
-        int len=fun(ind+1,prev,dp,nums);
-        
+        int nottake=fun(ind+1,prev,dp,nums);
+        int take=INT_MIN;
         if(prev==-1 || nums[ind]>nums[prev]){
-            len=max(len,1+fun(ind+1,ind,dp,nums));
+            take=1+fun(ind+1,ind,dp,nums);
         }
-        return dp[ind][prev+1]=len;
+        return dp[ind][prev+1]=max(nottake,take);
 
         
         
