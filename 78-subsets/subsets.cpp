@@ -1,17 +1,20 @@
 class Solution {
 public:
+    void subseq(vector<int>& nums,int idx,int n,vector<vector<int> >&ans,vector<int> temp){
+        if(idx==n){
+            ans.push_back(temp);
+            return;
+        }
+        subseq(nums,idx+1,n,ans,temp);
+        temp.push_back(nums[idx]);
+        subseq(nums,idx+1,n,ans,temp);
+
+    }
     vector<vector<int>> subsets(vector<int>& nums) {
         vector<vector<int>> ans;
+        vector<int> temp;
         int n=nums.size();
-        for(int mask=0;mask<(1<<n);mask++){
-            vector<int> temp;
-            for(int bit=0;bit<n;bit++){
-                if(mask & (1<<bit)){
-                    temp.push_back(nums[bit]);
-                }
-            }
-            ans.push_back(temp);
-        }
+        subseq(nums,0,nums.size(),ans,temp);
         return ans;
     }
 };
