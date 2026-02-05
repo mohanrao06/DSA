@@ -19,31 +19,26 @@ public:
 class Solution {
 public:
     Node* connect(Node* root) {
-        vector<vector<Node*>> level;
+        Node* dummy;
+        Node* tail;
+        Node* curr;
         if(!root)return NULL;
-        queue<Node*> q;
-        q.push(root);
-        while(!q.empty()){
-            int size=q.size();
-            vector<Node*> temp;
-            for(int i=0;i<size;i++){
-                Node* node=q.front();
-                q.pop();
-                temp.push_back(node);
-                if(node->left)q.push(node->left);
-                if(node->right)q.push(node->right);
+        curr=root;
+        while(curr){
+            dummy=new Node(0);
+            tail=dummy;
+            while(curr){
+                if(curr->left){
+                    tail->next=curr->left;
+                    tail=tail->next;
+                }
+                if(curr->right){
+                    tail->next=curr->right;
+                    tail=tail->next;
+                }
+                curr=curr->next;
             }
-            level.push_back(temp);
-        }
-
-        for(auto it:level){
-            int size=it.size();
-            if(size==1)it[0]->next=NULL;
-            it[size-1]->next=NULL;
-            for(int i=0;i<size-1;i++){
-                Node* node=it[i];
-                node->next=it[i+1];
-            }
+            curr=dummy->next;
         }
         return root;
     }
