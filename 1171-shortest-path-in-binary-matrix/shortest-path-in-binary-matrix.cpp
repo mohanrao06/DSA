@@ -1,41 +1,31 @@
 class Solution {
 public:
+    int drow[8]={-1,-1,-1,0,0,1,1,1};
+    int dcol[8]={-1,0,1,-1,1,-1,0,1};
     int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
-
         int n=grid.size();
-        if (grid[0][0] == 1 || grid[n-1][n-1] == 1)
-            return -1;
-        if(n==1)return 1;
+        int m=grid[0].size();
+        if(grid[0][0]==1 || grid[n-1][m-1]==1)return -1;
+        queue<pair<pair<int,int>,int>> q;
+        vector<vector<int>> vis(n,vector<int>(m,0));
+        q.push({{0,0},1});
+        vis[0][0]=1;
 
-
-        vector<pair<int, int>> dirs = {
-            {-1, -1}, {-1, 0}, {-1, 1},
-            {0, -1},           {0, 1},
-            {1, -1},  {1, 0},  {1, 1}
-        };
-        vector<vector<int>> dist(n,vector<int>(n,INT_MAX));
-
-        queue<pair<int,pair<int,int>>> q;
-        q.push({1,{0,0}});
-        dist[0][0]=0;
         while(!q.empty()){
-            int wt=q.front().first;
-            int r=q.front().second.first;
-            int c=q.front().second.second;
+            int r=q.front().first.first;
+            int c=q.front().first.second;
+            int d=q.front().second;
             q.pop();
-
+            if(r==n-1 && c==m-1)return d;
             for(int i=0;i<8;i++){
-                int nr=r+dirs[i].first;
-                int nc=c+dirs[i].second;
-                if(nr>=0 && nr<n && nc>=0 && nc<n &&
-                grid[nr][nc]==0 && wt+1<dist[nr][nc]){
-                    dist[nr][nc]=wt+1;
-                    q.push({wt+1,{nr,nc}});
+                int nrow=drow[i]+r;
+                int ncol=dcol[i]+c;
+                if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && !vis[nrow][ncol] && grid[nrow][ncol]==0){
+                    vis[nrow][ncol]=1;
+                    q.push({{nrow,ncol},d+1});
                 }
-                
             }
         }
-        if(dist[n-1][n-1]==INT_MAX)return  -1;
-        return dist[n-1][n-1];
+        return -1;
     }
 };
