@@ -9,7 +9,17 @@ public:
         return dp[ind]=stepone+steptwo;
     }
     int climbStairs(int n) {
-        vector<int> dp(n+1,-1);
-        return dfs(n,0,dp);
+        vector<int> dp(n+1,0);
+        for(int i=n;i>=0;i--){
+            if(i==n){
+                dp[i]=1;
+                continue;
+            }
+            int stepone=dp[i+1];
+            int stepstwo=0;
+            if(i+2<=n)stepstwo=dp[i+2];
+            dp[i]=stepone+stepstwo;
+        }
+        return dp[0];
     }
 };
