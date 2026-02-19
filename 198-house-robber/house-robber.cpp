@@ -10,13 +10,17 @@ public:
     int rob(vector<int>& nums) {
         int n=nums.size();
         vector<int> dp(n+2,0);
+        int next=0;
+        int next2=0;
         for(int i=n-1;i>=0;i--){
-            int nottake=dp[i+1];
-            int take=nums[i]+dp[i+2];
-            dp[i]=max(take,nottake);
-        }
+            int nottake=next;
+            int take=nums[i]+next2;
+            int curr=max(take,nottake);
+            next2=next;
+            next=curr;
 
-        return dp[0];
+        }
+        return next;
 
 
 
