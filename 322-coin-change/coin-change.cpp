@@ -1,40 +1,26 @@
 class Solution {
 public:
-    int n;
-    int fun(int ind,int target,vector<int>& arr,vector<vector<int>>& dp){
+    int fun(int ind,vector<int>& coins, int amount,vector<vector<int>> &dp){
+
         if(ind==0){
-            if(target%arr[ind]==0)return target/arr[ind];
-            else return 1e9;
-        }
-        if(dp[ind][target]!=-1)return dp[ind][target];
-        int nottake=0+fun(ind-1,target,arr,dp);
-        int take=1e9;
-        if(target>=arr[ind]){
-            take=1+fun(ind,target-arr[ind],arr,dp);
-        }
-        return dp[ind][target]=min(take,nottake);
-    }
-    int coinChange(vector<int>& coins, int amount) {
-        n=coins.size();
-        vector<vector<int>> dp(n,vector<int>(amount+1,0));
-        for(int t=0;t<=amount;t++){
-            if(t%coins[0]==0)dp[0][t]=t/coins[0];
-            else dp[0][t]=1e9;
-        }
-        for(int i=1;i<n;i++){
-            for(int j=0;j<=amount;j++){
-                int nottake=0+dp[i-1][j];
-                int take=1e9;
-                if(j>=coins[i]){
-                    take=1+dp[i][j-coins[i]];
-                }
-                dp[i][j]=min(take,nottake);
+            if(amount%coins[0]==0)return amount/coins[0];
+            else{
+                return 1e9;
             }
         }
-        if(dp[n-1][amount]==1e9){
-            return -1;
+        if(dp[ind][amount]!=-1)return dp[ind][amount];
+        int nottake=fun(ind-1,coins,amount,dp);
+        int take=1e9;
+        if(coins[ind]<=amount){
+            take=1+fun(ind,coins,amount-coins[ind],dp);
         }
-        return dp[n-1][amount];
-        
+        return dp[ind][amount]=min(take,nottake);
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        int n=coins.size();
+        vector<vector<int>> dp(n+1,vector<int> (amount+1,-1));
+        int ans=fun(n-1,coins,amount,dp);
+        if(ans==1e9)return -1;
+        return ans;
     }
 };
