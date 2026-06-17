@@ -1,13 +1,14 @@
 class Solution {
 public:
     void fun(vector<int>& nums, int target,int ind,vector<int> &temp,vector<vector<int>> & ans){
-        if (target < 0) return;
+        if(target<0)return;
         if(ind==nums.size()){
             if(target==0){
                 ans.push_back(temp);
             }
-            return ;
+            return;
         }
+
         fun(nums,target,ind+1,temp,ans);
         temp.push_back(nums[ind]);
         fun(nums,target-nums[ind],ind,temp,ans);
