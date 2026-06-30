@@ -15,9 +15,24 @@ public:
         return dp[ind]=oneDigit+towDigit;
     }
     int numDecodings(string s) {
-
+        
         int n=s.size();
-        vector<int> dp(n,-1);
-        return fun(0,s,dp);
+        if (s[0] == '0')
+            return 0;
+        vector<int> dp(n+1,0);
+        dp[0]=1;
+        dp[1]=1;
+        for(int i=2;i<=n;i++){
+            int oneDigit = 0;
+            if (s[i - 1] != '0')
+                oneDigit = dp[i - 1];
+            int towDigit = 0;
+            int sub = stoi(s.substr(i - 2, 2));
+            if (sub >= 10 && sub <= 26)
+                towDigit = dp[i - 2];
+
+            dp[i] = oneDigit + towDigit;
+        }
+        return dp[n];
     }
 };
