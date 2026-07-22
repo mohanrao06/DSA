@@ -13,10 +13,18 @@ public:
     }
     int jump(vector<int>& nums) {
         int n=nums.size();
-        vector<int> dp(n,-1);
+        vector<int> dp(n,1e9);
+        dp[n-1]=0;
 
 
-        return fun(0,nums,dp);
+        for(int i=n-2;i>=0;i--){
+            for(int jp=1;jp<=nums[i];jp++){
+                if(i+jp<n){
+                    dp[i]=min(dp[i],1+dp[i+jp]);
+                }
+            }
+        }
+        return dp[0];
 
     }
 };
