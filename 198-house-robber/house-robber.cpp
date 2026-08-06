@@ -1,29 +1,20 @@
 class Solution {
 public:
-    int fun(vector<int>& nums,int ind,vector<int> &dp){
-        if(ind>=nums.size())return 0;
+    int fun(int ind,vector<int>& nums,vector<int> &dp){
+        if(ind>=nums.size()){
+            return 0;
+        }
         if(dp[ind]!=-1)return dp[ind];
-        int curr=nums[ind]+fun(nums,ind+2,dp);
-        int next=0+fun(nums,ind+1,dp);
-        return dp[ind]= max(curr,next);
+        int nottake=0+fun(ind+1,nums,dp);
+        int take=nums[ind];
+        if(ind+2<nums.size()){
+            take+=fun(ind+2,nums,dp);
+        }
+        return dp[ind]=max(take,nottake);
     }
     int rob(vector<int>& nums) {
         int n=nums.size();
-        vector<int> dp(n+2,0);
-        int next=0;
-        int next2=0;
-        for(int i=n-1;i>=0;i--){
-            int nottake=next;
-            int take=nums[i]+next2;
-            int curr=max(take,nottake);
-            next2=next;
-            next=curr;
-
-        }
-        return next;
-
-
-
-        
+        vector<int> dp(n,-1);
+        return fun(0,nums,dp);
     }
 };
