@@ -14,8 +14,25 @@ public:
     }
     int coinChange(vector<int>& coins, int amount) {
         int n=coins.size();
-        vector<vector<int>> dp(n+1,vector<int>(amount+1,-1));
-       int ans=fun(0,coins,amount,dp);
+        vector<vector<int>> dp(n+1,vector<int>(amount+1,1e9));
+       
+       
+        for(int ind = 0; ind <= n; ind++) {
+        dp[ind][0] = 0;
+    }
+
+       for(int ind=n-1;ind>=0;ind--){
+            for(int amt=0;amt<=amount;amt++){
+                int nottake=dp[ind+1][amt];
+                int take=1e9;
+                if(amt>=coins[ind]){
+                    take=1+dp[ind][amt-coins[ind]];
+                }
+            
+                dp[ind][amt]= min(take,nottake); 
+            }
+       }
+        int ans=dp[0][amount];
        if(ans==1e9)return -1;
        return ans;
     }
